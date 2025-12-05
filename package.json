@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "com.song.core",
   "displayName": "SongLib",
   "version": "1.0.0",
@@ -8,4 +8,5 @@
   "author": {
     "name": "WonSeok Song",
     "email": "songwon4529@naver.com"
-  }}
+  }
+}
