@@ -2,8 +2,5 @@
   "name": "com.song.core",
   "rootNamespace": "SongLib",
   "references": [],
-  "includePlatforms": ["Editor", "Windows", "Linux", "MacOS", "Android", "iOS"],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
   "autoReferenced": true
 }
