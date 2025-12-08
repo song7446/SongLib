@@ -1,0 +1,12 @@
+{
+  "name": "com.song.core",
+  "displayName": "SongLib",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "description": "Personal core systems for Unity projects.",
+  "keywords": ["core","utility","wonseok"],
+  "author": {
+    "name": "WonSeok Song",
+    "email": "songwon4529@naver.com"
+  }
+}
