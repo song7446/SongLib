@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 // class IdleState : IState
 // {
@@ -42,6 +43,8 @@ namespace SongLib.Patterns.State
 
             _currentState = newState;
             _currentState.OnEnter();
+            
+            Debug.Log(newState.ToString());
         }
 
         public void Update(float deltaTime)
