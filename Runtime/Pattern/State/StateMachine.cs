@@ -51,5 +51,10 @@ namespace SongLib.Patterns.State
         {
             _currentState?.OnUpdate(deltaTime);
         }
+        
+        public IState GetCurrentState()
+        {
+            return _currentState;
+        }
     }
 }
