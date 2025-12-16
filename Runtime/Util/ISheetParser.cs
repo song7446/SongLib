@@ -1,8 +1,8 @@
 namespace SongLib
 {
-    public interface ISheetParser<T>
+    public interface ISheetJsonParser
     {
-        T Parse(string csv);
+        string Parse(string csv);
     }
 
 }
