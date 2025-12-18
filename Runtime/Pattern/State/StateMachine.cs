@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,23 +29,13 @@ namespace SongLib.Patterns.State
     public class StateMachine
     {
         private IState _currentState;
-        private readonly Dictionary<System.Type, IState> _stateCache = new();
 
         public void ChangeState<T>() where T : IState, new()
         {
             _currentState?.OnExit();
-
-            var type = typeof(T);
-            if (!_stateCache.TryGetValue(type, out var newState))
-            {
-                newState = new T();
-                _stateCache[type] = newState;
-            }
-
-            _currentState = newState;
+            _currentState = new T();
             _currentState.OnEnter();
-            
-            Debug.Log(newState.ToString());
+            Debug.Log($"[FSM] ChangeState → {typeof(T).Name}\n{Environment.StackTrace}");
         }
 
         public void Update(float deltaTime)
