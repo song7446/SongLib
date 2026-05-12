@@ -7,20 +7,14 @@ public class GoogleSheetLoader : EditorWindow
 {
     private UnityWebRequest _request;
 
-    private string sheetUrl;
-    private string savePath = "Assets/Sheets/dialogue.csv";
-
-    private const string UrlPrefKey = "GoogleSheetLoader_URL";
-
+    private string _sheetUrl;
+    private string _savePath = "Assets/Sheets/";
+    private string _sheetName;
+    
     [MenuItem("Tools/Google Sheet/Download CSV")]
     public static void Open()
     {
         GetWindow<GoogleSheetLoader>("Google Sheet Loader");
-    }
-
-    private void OnEnable()
-    {
-        sheetUrl = EditorPrefs.GetString(UrlPrefKey, "");
     }
 
     private void OnGUI()
@@ -28,23 +22,20 @@ public class GoogleSheetLoader : EditorWindow
         GUILayout.Label("Google Sheet → CSV Downloader", EditorStyles.boldLabel);
 
         GUILayout.Label("CSV URL");
-        sheetUrl = EditorGUILayout.TextArea(sheetUrl, GUILayout.Height(50));
+        _sheetUrl = EditorGUILayout.TextField(_sheetUrl);
 
-        GUILayout.Label("Save Path");
-        savePath = EditorGUILayout.TextField(savePath);
-
-        if (GUI.changed)
-            EditorPrefs.SetString(UrlPrefKey, sheetUrl);
+        GUILayout.Label("Sheet Name");
+        _sheetName = EditorGUILayout.TextField(_sheetName);
 
         GUILayout.Space(10);
 
-        using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(sheetUrl)))
+        using (new EditorGUI.DisabledScope(string.IsNullOrEmpty(_sheetUrl)))
         {
             if (_request == null)
             {
                 if (GUILayout.Button("Download & Save CSV"))
                 {
-                    StartRequest(sheetUrl);
+                    StartRequest(_sheetUrl);
                 }
             }
             else
@@ -77,7 +68,7 @@ public class GoogleSheetLoader : EditorWindow
         {
             SaveCsv(
                 _request.downloadHandler.text,
-                savePath
+                _savePath
             );
         }
 
@@ -92,17 +83,19 @@ public class GoogleSheetLoader : EditorWindow
             Debug.LogError("❌ CSV is empty");
             return;
         }
+        
+        string savePathWithSheetName = savePath+ _sheetName + ".csv";
 
-        var dir = Path.GetDirectoryName(savePath);
+        var dir = Path.GetDirectoryName(savePathWithSheetName);
         if (!Directory.Exists(dir))
             Directory.CreateDirectory(dir);
 
         // BOM 제거
         csv = csv.Replace("\uFEFF", "");
 
-        File.WriteAllText(savePath, csv);
+        File.WriteAllText(savePathWithSheetName, csv);
         AssetDatabase.Refresh();
 
-        Debug.Log($"✅ CSV saved: {savePath}");
+        Debug.Log($"✅ CSV saved: {savePathWithSheetName}");
     }
 }
