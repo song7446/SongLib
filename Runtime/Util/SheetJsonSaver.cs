@@ -1,6 +1,9 @@
 using System.IO;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace SongLib
 {
@@ -10,18 +13,31 @@ namespace SongLib
         {
             if (string.IsNullOrEmpty(json))
             {
-                Debug.LogError("❌ JSON is empty");
+                Debug.LogError("JSON 내용이 비어 있습니다.");
                 return;
             }
 
-            var dir = Path.GetDirectoryName(savePath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
+            if (string.IsNullOrWhiteSpace(savePath))
+            {
+                Debug.LogError("JSON 저장 경로가 비어 있습니다.");
+                return;
+            }
+
+            string directory = Path.GetDirectoryName(savePath);
+
+            if (!string.IsNullOrEmpty(directory) &&
+                !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
 
             File.WriteAllText(savePath, json);
-            AssetDatabase.Refresh();
 
-            Debug.Log($"✅ JSON saved: {savePath}");
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+#endif
+
+            Debug.Log($"JSON 저장 완료: {savePath}");
         }
     }
 }
